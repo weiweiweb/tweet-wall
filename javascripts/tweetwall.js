@@ -4,7 +4,7 @@
     list.items = [];
     
     list.push = function(items) {
-      items.css('display', 'none').highlight('tulip time').highlight('tuliptime').highlight('tulip_time').highlight('tech embassy').highlight('techembassy');
+      items.css('display', 'none').highlight('aiww').highlight('ai weiwei').highlight('#aiww').highlight('freeaiweiwei').highlight('weiweicam');
       items.each(function() {
         list.items.push(this);
       })
@@ -17,16 +17,31 @@
     }
     
     var process = function() {
-      $(list.items.shift()).appendTo(list).slideDown(5000);
+      $(list.items.shift()).appendTo(list).slideDown(8000);
       list.cleanup();
     }
     
-    setInterval(process, 5000);
+    setInterval(process, 8000);
     return list;
   }
-  
-  var query = encodeURIComponent('techembassy OR "tech embassy" OR ideafoundry OR Tulip_time OR "Tulip Time" -pella -iowa');
-  
+ 
+  var querytext;
+  if (realquerytext) {
+      querytext = realquerytext;
+  } else {
+      querytext = 'aiww OR "ai weiwei" OR "aiweiwei" OR "#aiww" OR "freeaiweiwei" OR aiwwenglish';
+  }
+
+  var flickrquerytext;
+  if (realflickrquerytext) {
+    flickrquerytext = encodeURIComponent(realflickrquerytext);
+  } else {
+    flickrquerytext = '%22aiweiwei%22%20OR%20%22ai%20weiwei%22%20OR%20%22aiww%22%20OR%20%22freeaiweiwei%22&';
+  }
+
+  var query = encodeURIComponent(querytext);
+  // var query = encodeURIComponent('aiww OR "ai weiwei" OR "aiweiwei" OR "#aiww" OR "freeaiweiwei" OR aiwwenglish');
+ 
   $(function() {
     tweets = $('#tweets').scroller();
     flicks = $('#flickr').scroller();
@@ -37,11 +52,11 @@
         var url = 'http://search.twitter.com/search.json?q=' + query + '&rpp=30&callback=?'; 
         $.getJSON(url, function(data) {
           $.each(data.results, function() {  
-            tweets.push($('<li><img class="profile" src="' + this.profile_image_url + '"/><span class="from">' + this.from_user + ':</span> ' + inlinePics(this.text) + '</li>'))
+            tweets.push($('<li><img class="profile" src="' + this.profile_image_url + '"/><span class="meta"><span class="from">' + this.from_user + '</span> <span class="created_at">' + fmtDates(this.created_at) + '</span></span>' + inlinePics(this.text) + '</li>'))
            }); 
          });
       }
-      setTimeout(fetchTweets, 5000);
+      setTimeout(fetchTweets, 8000);
     }
     
     jsonFlickrApi = function(data) {
@@ -58,9 +73,18 @@
         flicks.push($('<li><a href="' + p_url + '"><img src="' + t_url + '"/></a></li>'));
       });
     }
-    function fetchFlicks() {
+
+    function fetchFlicks(querytext) {
+      var user_id;
+      if ( flickr_user_id == "" ) {
+          // user_id = "&user_id=87328984@N04";
+          user_id = ""
+      } else {
+          user_id = "&user_id=" + flickr_user_id;
+      }
+      var flick_url = "http://api.flickr.com/services/rest/?callback=?&format=json&method=flickr.photos.search&text=" + querytext + user_id + "&tag_mode=any&api_key=99c91f41388ac416592ab3c00f181146&jsoncallback=jsonFlickrApi";
       if (flicks.items.length < 15) {
-          $.getJSON("http://api.flickr.com/services/rest/?callback=?&format=json&method=flickr.photos.search&text=%22tulip%20time%22%20OR%20%22tech%20embassy%22&tag_mode=all&api_key=f9eed8709bd8c9663f988960cbdad53f&jsoncallback=jsonFlickrApi")
+          $.getJSON(flick_url)
       }
       window.setTimeout(fetchFlicks, 120000);        
     }
@@ -72,9 +96,19 @@
         .replace(/http:\/\/yfrog\.com\/([\w\d]+)/, '<img src="http://yfrog.com/$1.th.jpg" class="twitpic">')
         .replace(/http:\/\/pic\.im\/([\w\d]+)/, '<img src="http://pic.im/website/thumbnail/$1" class="twitpic">')
     }
+
+    function fmtDates(datestring) {
+        var d = new Date(datestring);
+        if (!isNaN(d.getMonth())) {
+            return d;
+            // return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes();
+        } else {
+            return "";
+        }
+    }
             
     fetchTweets();
-    fetchFlicks();
+    fetchFlicks(flickrquerytext);
   });
   
 })(jQuery)
