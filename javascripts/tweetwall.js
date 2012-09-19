@@ -36,11 +36,10 @@
   if (realflickrquerytext) {
     flickrquerytext = encodeURIComponent(realflickrquerytext);
   } else {
-    flickrquerytext = '%22aiweiwei%22%20OR%20%22ai%20weiwei%22%20OR%20%22aiww%22%20OR%20%22freeaiweiwei%22&';
+    flickrquerytext = encodeURIComponent('aiww OR "ai weiwei" OR "aiweiwei" OR "#aiww" OR "freeaiweiwei" OR aiwwenglish');
   }
 
   var query = encodeURIComponent(querytext);
-  // var query = encodeURIComponent('aiww OR "ai weiwei" OR "aiweiwei" OR "#aiww" OR "freeaiweiwei" OR aiwwenglish');
  
   $(function() {
     tweets = $('#tweets').scroller();
