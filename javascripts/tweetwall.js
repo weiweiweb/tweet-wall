@@ -26,14 +26,14 @@
   }
  
   var querytext;
-  if (realquerytext) {
+  if ( typeof realquerytext !== 'undefined' ) {
       querytext = realquerytext;
   } else {
       querytext = 'aiww OR "ai weiwei" OR "aiweiwei" OR "#aiww" OR "freeaiweiwei" OR aiwwenglish';
   }
 
   var flickrquerytext;
-  if (realflickrquerytext) {
+  if ( typeof realflickrquerytext !== 'undefined' ) {
     flickrquerytext = encodeURIComponent(realflickrquerytext);
   } else {
     flickrquerytext = encodeURIComponent('aiww OR "ai weiwei" OR "aiweiwei" OR "#aiww" OR "freeaiweiwei" OR aiwwenglish');
@@ -73,15 +73,17 @@
       });
     }
 
-    function fetchFlicks(querytext) {
-      var user_id;
-      if ( flickr_user_id == "" ) {
-          // user_id = "&user_id=87328984@N04";
-          user_id = ""
-      } else {
+    function fetchFlicks() {
+      var user_id = "";
+      if ( typeof flickr_user_id !== 'undefined' ) {
           user_id = "&user_id=" + flickr_user_id;
       }
-      var flick_url = "http://api.flickr.com/services/rest/?callback=?&format=json&method=flickr.photos.search&text=" + querytext + user_id + "&tag_mode=any&api_key=99c91f41388ac416592ab3c00f181146&jsoncallback=jsonFlickrApi";
+      var f_api = '99c91f41388ac416592ab3c00f181146';
+      if ( typeof flickr_api !== 'undefined' ) {
+          f_api = flickr_api;
+      }
+
+      var flick_url = "http://api.flickr.com/services/rest/?callback=?&format=json&method=flickr.photos.search&text=" + flickrquerytext + user_id + "&tag_mode=any&api_key=" + f_api + "&jsoncallback=jsonFlickrApi";
       if (flicks.items.length < 15) {
           $.getJSON(flick_url)
       }
@@ -107,7 +109,7 @@
     }
             
     fetchTweets();
-    fetchFlicks(flickrquerytext);
+    fetchFlicks();
   });
   
 })(jQuery)
