@@ -106,3 +106,58 @@ footer {
   color: #08C;
   font-weight: bold;
 }
+
+
+/** media queries **/
+
+@media only screen and (max-width: 480px) {
+    #flickr img, .twitpic {
+        width: 50%;
+    }
+
+    #tweets li {
+        font-size: 10pt;
+        padding-left: 20px;
+    }
+
+    #tweets li .profile {
+        display: none;
+    }
+
+}
+
+/*
+@media only screen and (min-width: 480px) {
+    #flickr img, .twitpic {
+        width: 50%;
+    }
+
+    #tweets li {
+        font-size: 10pt;
+    }
+
+}
+*/
+
+@media only screen and (max-width: 767px) {
+    #flickr img, .twitpic {
+        width: 75%;
+    }
+
+    #tweets li {
+        font-size: 12pt;
+    }
+
+}
+
+@media only screen and (min-width: 767px) {
+
+}
+
+@media only screen and (max-width: 940px) {
+        
+}
+
+@media only screen and (min-width: 940px) {
+}
+

@@ -25,12 +25,11 @@
     return list;
   }
  
-  var querytext;
-  if ( typeof realquerytext !== 'undefined' ) {
-      querytext = realquerytext;
-  } else {
-      querytext = 'aiww OR "ai weiwei" OR "aiweiwei" OR "#aiww" OR "freeaiweiwei" OR aiwwenglish';
-  }
+  // HACK FOR RIGHT NOW:  var querytext = 'aiww OR "ai weiwei" OR "aiweiwei" OR "#aiww" OR "freeaiweiwei" OR aiwwenglish OR weiweicam';
+  var querytext = 'weiweicam';
+  // if ( typeof realquerytext !== 'undefined' ) {
+  //    querytext = realquerytext;
+  //} 
 
   var flickrquerytext;
   if ( typeof realflickrquerytext !== 'undefined' ) {
