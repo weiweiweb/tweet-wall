@@ -1,0 +1,8 @@
+
+For setting up the site to load on linux:
+
+1.) Create a desktop shorcut for Chrome
+2.) Replace the target field with something like:
+
+C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chrome.exe --kiosk http://weiweicam.com
+
