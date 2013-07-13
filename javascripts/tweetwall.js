@@ -1,10 +1,12 @@
+var megaquery='weiweicam';
+
 (function($) {
   $.fn.scroller = function () {
     var list = this;
     list.items = [];
     
     list.push = function(items) {
-      items.css('display', 'none').highlight('aiww').highlight('ai weiwei').highlight('#aiww').highlight('freeaiweiwei').highlight('weiweicam');
+      items.css('display', 'none').highlight('aiww').highlight('ai weiwei').highlight('#aiww').highlight(megaquery);
       items.each(function() {
         list.items.push(this);
       })
@@ -25,8 +27,8 @@
     return list;
   }
  
-  var querytext = 'aiww OR "ai weiwei" OR "aiweiwei" OR "#aiww" OR "freeaiweiwei" OR aiwwenglish OR weiweicam';
-  // var querytext = 'weiweicam';
+  var querytext = megaquery;
+  
   if ( typeof realquerytext !== 'undefined' ) {
       querytext = realquerytext;
   } 
@@ -35,22 +37,22 @@
   if ( typeof realflickrquerytext !== 'undefined' ) {
     flickrquerytext = encodeURIComponent(realflickrquerytext);
   } else {
-    flickrquerytext = encodeURIComponent('aiww OR "ai weiwei" OR "aiweiwei" OR "#aiww" OR "freeaiweiwei" OR aiwwenglish');
+    flickrquerytext = encodeURIComponent(megaquery);
   }
 
   var query = encodeURIComponent(querytext);
+
+  var get_tweets_query = '../get-tweets-search.php?q=' + query;
  
   $(function() {
     tweets = $('#tweets').scroller();
     flicks = $('#flickr').scroller();
-    
+
     function fetchTweets() {
       if(tweets.items.length < 15) {
-        // since_id
-        var url = 'http://search.twitter.com/search.json?q=' + query + '&rpp=30&callback=?'; 
-        $.getJSON(url, function(data) {
-          $.each(data.results, function() {  
-            tweets.push($('<li><img class="profile" src="' + this.profile_image_url + '"/><span class="meta"><span class="from">' + this.from_user + '</span> <span class="created_at">' + fmtDates(this.created_at) + '</span></span>' + inlinePics(this.text) + '</li>'))
+          $.getJSON(get_tweets_query , function(data) {
+          $.each(data.statuses, function() {  
+            tweets.push($('<li><img class="profile" src="' + this.user.profile_image_url + '"/><span class="meta"><span class="from">' + this.user.screen_name + '</span> <span class="created_at">' + fmtDates(this.created_at) + '</span></span>' + inlinePics(this.text) + '</li>'))
            }); 
          });
       }
